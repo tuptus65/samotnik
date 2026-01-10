@@ -5,7 +5,6 @@ class Board {
     constructor(canvas, ctx) {
         this.canvas = canvas;
         this.ctx = ctx;
-        this.margin = 20; // Większy margines dla oddechu przy krawędzi
 
         this.offscreenCanvas = document.createElement('canvas');
         this.offscreenCanvas.width = canvas.width;
@@ -18,18 +17,6 @@ class Board {
         // Wzór: (9 * 2.1 * r) = canvas.width * 0.7
         this.radius = Math.round((this.canvas.width * 0.7) / 18);
 
-        // this.position = {x: canvasRect.left, y: canvasRect.top}
-        // this.board = [
-        //     [-1,-1,-1,0,1,1,-1,-1,-1],
-        //     [-1,-1,-1,1,1,1,-1,-1,-1],
-        //     [-1,-1,-1,1,1,1,-1,-1,-1],
-        //     [1,1,1,1,1,1,1,1,1],
-        //     [1,1,1,1,1,1,1,1,1],
-        //     [1,1,1,1,1,1,1,1,1],
-        //     [-1,-1,-1,1,1,1,-1,-1,-1],
-        //     [-1,-1,-1,1,1,1,-1,-1,-1],
-        //     [-1,-1,-1,1,1,1,-1,-1,-1]
-        // ]
         this.reset()
     }
 
@@ -75,17 +62,6 @@ class Board {
 
         // Rysujemy na offscreenCtx (logika pozostaje Twoja)
         const octx = this.offscreenCtx;
-
-        octx.save();
-        octx.shadowColor = "rgba(0, 0, 0, 0.5)";
-        octx.shadowBlur = 25;
-        octx.shadowOffsetY = 12;
-
-        octx.beginPath();
-        octx.arc(centerX, centerY, totalBoardRadius, 0, Math.PI * 2);
-        octx.fillStyle = "#3e2723";
-        octx.fill();
-        octx.restore();
 
         // 1. CIEŃ CAŁEJ PLANSZY
         octx.save();
@@ -168,8 +144,6 @@ class Board {
         // Odległość między środkami kulek
         const spacing = this.radius * 2.1;
 
-        // x - 4 i y - 4 przesuwa indeksy tak, że środek (4,4) staje się punktem (0,0)
-        // Dzięki temu (centerX, centerY) jest idealnym środkiem planszy
         return {
             x: centerX + (x - 4) * spacing,
             y: centerY + (y - 4) * spacing
@@ -181,7 +155,6 @@ class Board {
         const centerY = this.canvas.height / 2;
         const spacing = this.radius * 2.1;
 
-        // Odwracamy wzór z calcCords
         const x = Math.round((cx - centerX) / spacing + 4);
         const y = Math.round((cy - centerY) / spacing + 4);
 
@@ -223,8 +196,7 @@ class Board {
 
     isHole(cx,cy) {
         const cords = this.calcIndex(cx, cy)
-        if (cords && this.board[cords.x][cords.y] === 0) return true
-        return false
+        return cords && this.board[cords.x][cords.y] === 0;
     }
 
     setHole(x, y) {

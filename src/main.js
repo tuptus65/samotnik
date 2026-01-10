@@ -1,6 +1,5 @@
 import Board from "./components/board.js"
 import Ball from "./components/ball.js"
-import Hole from "./components/hole.js"
 
 class Game {
     constructor() {
@@ -31,11 +30,7 @@ class Game {
 
     endGame() {
         const balls = this.board.countBalls()
-        if(balls === 1) {
-            this.winer = true
-        } else {
-            this.winer = false
-        }
+        this.winer = balls === 1;
         this.drawEndGame()
     }
 
