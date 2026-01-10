@@ -1,9 +1,9 @@
 import Board from "./components/board.js"
 import Ball from "./components/ball.js"
 
-class Game {
-    constructor() {
-        this.canvas = document.querySelector('canvas')
+export class Game {
+    constructor(canvas) {
+        this.canvas = canvas
         this.ctx = this.canvas.getContext("2d")
         const canvasRect = this.canvas.getBoundingClientRect()
         this.position = {x: canvasRect.left, y: canvasRect.top}
@@ -159,8 +159,3 @@ class Game {
         return {x: Math.round(x - this.position.x), y: Math.round(y - this.position.y) }
     }
 }
-
-(() => {
-    window.game = new Game()
-    game.run()
-})()

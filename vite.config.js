@@ -11,7 +11,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/main.js'),
       name: 'Samotnik',
-      fileName: 'samotnik',
+      fileName: 'samotnik.js',
       formats: ['es']
     },
     minify: 'terser',

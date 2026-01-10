@@ -2,7 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Samotnik</title>
     <style>
@@ -17,8 +16,19 @@
   </head>
   <body>
     <div id="app">
-      <canvas width="600" height="600"></canvas>
+      <canvas id="samotnik-dev" width="600" height="600"></canvas>
     </div>
-    <script type="module" src="/src/main.js"></script>
+    <script type="module">
+      import { Game } from './src/main.js'; // Ścieżka do Twojego pliku źródłowego
+
+      const canvas = document.getElementById('samotnik-dev');
+      if (canvas) {
+        const game = new Game(canvas);
+        game.run();
+
+        // Opcjonalnie: ułatwienie debugowania w konsoli
+        window.game = game;
+      }
+    </script>
   </body>
 </html>

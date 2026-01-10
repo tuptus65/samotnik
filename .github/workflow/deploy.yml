@@ -1,0 +1,45 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Prepare package.json for dist branch
+        run: |
+          jq 'del(.devDependencies) | del(.scripts) | del(.files) |
+              .main = "./samotnik.js" | 
+              .module = "./samotnik.js" | 
+              .exports["."].import = "./samotnik.js"' package.json > dist/package.json
+
+      - name: Deploy to dist branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
+          branch: dist
+          clean: true
+          single-commit: true
+          git-config-name: github-actions[bot]
+          git-config-email: github-actions[bot]@users.noreply.github.com
