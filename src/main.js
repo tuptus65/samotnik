@@ -121,14 +121,33 @@ export class Game {
 
         const relCords = this.relPosition(e.clientX, e.clientY)
         const cords = this.board.calcIndex(relCords.x, relCords.y)
-        if (this.board.isHole(relCords.x, relCords.y) && (cords.x !== this.lastCords.x || cords.y !== this.lastCords.y)) {
-            this.board.setBall(cords.x,cords.y)
-            const dx = cords.x - this.lastCords.x
-            const dy = cords.y - this.lastCords.y
-            this.board.setHole(cords.x - (dx / 2), cords.y - (dy / 2))
+
+        // OBLICZAMY DYSTANS
+        const dx = cords ? cords.x - this.lastCords.x : 0;
+        const dy = cords ? cords.y - this.lastCords.y : 0;
+
+        // WARUNEK: Musi być dziura, inne pole, i DOKŁADNIE 2 pola odległości (pionowo lub poziomo)
+        const isValidDistance = (Math.abs(dx) === 2 && dy === 0) || (Math.abs(dy) === 2 && dx === 0);
+
+        if (cords && this.board.isHole(relCords.x, relCords.y) && isValidDistance) {
+
+            const midX = cords.x - (dx / 2);
+            const midY = cords.y - (dy / 2);
+
+            // Dodatkowe sprawdzenie: czy przeskakujemy nad kulką (wartość 1)
+            if (this.board.board[midX][midY] === 1) {
+                this.board.setBall(cords.x, cords.y);
+                this.board.setHole(midX, midY);
+            } else {
+                // Przeskok nad pustym polem - cofnij
+                this.board.setBall(this.lastCords.x, this.lastCords.y);
+            }
+
         } else {
-            this.board.setBall(this.lastCords.x,this.lastCords.y)
+            // Nie dziura, za daleko, na ukos lub to samo pole - cofnij
+            this.board.setBall(this.lastCords.x, this.lastCords.y);
         }
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.board.draw()
         this.is_dragged = false
