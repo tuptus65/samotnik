@@ -1,14 +1,25 @@
 {
   "name": "samotnik",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Gra Samotnik - Peg Solitaire",
   "type": "module",
+  "files": ["dist"],
+  "main": "./dist/samotnik.js",
+  "module": "./dist/samotnik.js",
+  "author": "Tuptus",
+  "exports": {
+    ".": {
+      "import": "./dist/mastermind.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
+  "private": true,
   "devDependencies": {
-    "vite": "^5.4.1"
+    "terser": "^5.44.1",
+    "vite": "^7.3.1"
   }
 }
