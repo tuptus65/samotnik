@@ -1,0 +1,15 @@
+{
+  "name": "samotnik",
+  "version": "1.0.0",
+  "description": "Gra Samotnik - Peg Solitaire",
+  "type": "module",
+  "main": "./samotnik.js",
+  "module": "./samotnik.js",
+  "author": "Tuptus",
+  "exports": {
+    ".": {
+      "import": "./samotnik.js"
+    }
+  },
+  "private": true
+}
