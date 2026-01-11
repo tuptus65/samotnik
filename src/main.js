@@ -14,6 +14,19 @@ export class Game {
         this.canvas.addEventListener('mousedown', (e) => this.movedDown(e))
         this.canvas.addEventListener('mousemove', (e) => this.moved(e))
         this.canvas.addEventListener('mouseup', (e) => this.movedUp(e))
+        this.canvas.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            this.movedDown(e.touches[0]);
+        }, { passive: false });
+
+        this.canvas.addEventListener("touchmove", (e) => {
+            e.preventDefault(); // WAŻNE: blokuje przesuwanie całej strony podczas przeciągania kulki
+            this.moved(e.touches[0]);
+        }, { passive: false });
+
+        this.canvas.addEventListener("touchend", (e) => {
+            this.movedUp(e.changedTouches[0]);
+        });
     }
 
     resetGame() {
